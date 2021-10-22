@@ -1,0 +1,203 @@
+<div class="componentsWrapper">
+  <div class="tableComponentsWrapper">
+    <div class="loading" [ngClass]="{ hide: !loading }">
+      <mat-spinner class="spinner"></mat-spinner>
+    </div>
+    <div class="tableWrapper">
+      <table mat-table [dataSource]="houseData">
+        <ng-container sticky matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let element">
+            <p>{{ element.name }}</p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="region">
+          <th mat-header-cell *matHeaderCellDef>Region</th>
+          <td mat-cell *matCellDef="let element">
+            <p>{{ element.region }}</p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="words">
+          <th mat-header-cell *matHeaderCellDef>Words</th>
+          <td mat-cell *matCellDef="let element">
+            <p>{{ element.words }}</p>
+          </td>
+        </ng-container>
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          (click)="houseClicked(row)"
+          [ngClass]="{ selected: row.selected }"
+        ></tr>
+      </table>
+    </div>
+    <mat-paginator
+      class="paginator"
+      (page)="handlePageEvent($event)"
+      [length]="paginatorLength"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      [showFirstLastButtons]="true"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+  </div>
+  <div class="detailsComponentWrapper">
+    <div *ngIf="!detailData && !detailLoading" class="logoBg"></div>
+    <div class="loading detailLoading" [ngClass]="{ hide: !detailLoading }">
+      <mat-spinner class="spinner detailSpinner"></mat-spinner>
+    </div>
+    <div *ngIf="detailData" class="detailData">
+      <h1>{{ detailData.name }}</h1>
+      <div class="detailElement">
+        <div class="detailTitle">Coat of Arms:</div>
+        <div class="detailContent">{{ detailData.coatOfArms }}</div>
+      </div>
+      <div class="detailElement">
+        <div class="detailTitle">Words</div>
+        <div class="detailContent">{{ detailData.words }}</div>
+      </div>
+      <div
+        *ngIf="detailData.ancestralWeapons[0].length > 0"
+        class="listItem"
+        class="detailElement"
+      >
+        <div class="detailTitle">Ancestral weapons</div>
+        <div class="detailContent">
+          <div *ngFor="let ancestralWeapon of detailData.ancestralWeapons">
+            {{ ancestralWeapon }}
+          </div>
+        </div>
+      </div>
+      <div class="detailElement">
+        <div class="detailTitle">Founder</div>
+        <div class="detailContent">{{ detailData.founder }}</div>
+      </div>
+      <div
+        *ngIf="detailData.titles[0].length > 0"
+        class="listItem"
+        class="detailElement"
+      >
+        <div class="detailTitle">Titles</div>
+        <div class="detailContent">
+          <div *ngFor="let title of detailData.titles">
+            {{ title }}
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="detailData.seats[0].length > 0"
+        class="listItem"
+        class="detailElement"
+      >
+        <div class="detailTitle">Seats</div>
+        <div class="detailContent">
+          <div *ngFor="let seat of detailData.seats">
+            {{ seat }}
+          </div>
+        </div>
+      </div>
+      <div class="detailElement">
+        <div class="detailTitle">current Lord</div>
+        <div class="detailContent">{{ detailData.currentLord }}</div>
+      </div>
+      <div class="detailElement">
+        <div class="detailTitle">Heir</div>
+        <div class="detailContent">{{ detailData.heir }}</div>
+      </div>
+
+      <div class="detailElement">
+        <div class="detailTitle">Overlord</div>
+        <div class="detailContent">{{ detailData.overlord }}</div>
+      </div>
+      <div class="detailElement">
+        <div class="detailTitle">Region</div>
+        <div class="detailContent">{{ detailData.region }}</div>
+      </div>
+      <div class="detailElement">
+        <div class="detailTitle">Founded</div>
+        <div class="detailContent">{{ detailData.founded }}</div>
+      </div>
+
+      <mat-accordion>
+        <mat-expansion-panel
+          class="expansionPanel"
+          *ngIf="detailData.cadetBranches.length > 0"
+        >
+          <mat-expansion-panel-header class="expansionPanelHeader">
+            <mat-panel-title class="expansionPanelTitle">
+              cadet branches
+            </mat-panel-title>
+            <mat-panel-description
+              *ngIf="!cadetBranchesLoading"
+              class="expansionPanelDescription"
+            >
+              {{ detailData.name }} has
+              {{ detailData.cadetBranches.length }} cadet branches
+            </mat-panel-description>
+            <mat-panel-description
+              *ngIf="cadetBranchesLoading"
+              class="expansionPanelDescription"
+            >
+              <div class="spinnerDescriptionWrapper">
+                <mat-spinner
+                  [diameter]="30"
+                  class="spinnerDescription"
+                ></mat-spinner>
+              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div
+            class="listItem"
+            *ngFor="let cadetBranch of cadetBranchesData"
+          >
+            {{ cadetBranch }}
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel
+          class="expansionPanel"
+          *ngIf="detailData.swornMembers.length > 0"
+        >
+          <mat-expansion-panel-header class="expansionPanelHeader">
+            <mat-panel-title class="expansionPanelTitle">
+              sworn members
+            </mat-panel-title>
+            <mat-panel-description
+            *ngIf="swornMembersLoading"
+            class="expansionPanelDescription"
+          >
+            <div class="spinnerDescriptionWrapper">
+              <mat-spinner
+                [diameter]="30"
+                class="spinnerDescription"
+              ></mat-spinner>
+            </div>
+          </mat-panel-description>
+            <mat-panel-description *ngIf="!swornMembersLoading" class="expansionPanelDescription">
+              {{ detailData.name }} has
+              {{ detailData.swornMembers.length }} sworn members
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="listItem" *ngFor="let member of swornMembersData">
+            {{ member.name }}
+            <a *ngIf="member.aliases[0].length > 0">
+              <pre>
+                also known as
+                <a *ngFor="let alias of member.aliases; let last = last">{{ alias }}<a *ngIf="!last">,</a> </a>
+              </pre>
+            </a>
+            <a *ngIf="member.titles[0].length > 0">
+              <ul>
+                <li *ngFor="let title of member.titles">{{ title }}</li>
+              </ul>
+            </a>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>

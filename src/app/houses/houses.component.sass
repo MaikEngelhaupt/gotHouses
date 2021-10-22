@@ -1,0 +1,130 @@
+.componentsWrapper
+  display: flex
+.tableComponentsWrapper
+  height: 100vh
+  width: 50%
+  margin: auto
+  .tableWrapper
+    overflow-y: auto
+    height: 93%
+    -ms-overflow-style: none
+    scrollbar-width: none
+    table
+      width: 100%
+  .paginator
+    height: 7%
+.mat-row
+  cursor: pointer
+  .mat-cell p
+    transition: all 0.3s
+
+.mat-row:hover
+  background-color: #999
+  .mat-cell p
+    transition: all 0.3s
+    transform: translate(20px)
+    color: #000
+.tableWrapper::-webkit-scrollbar
+  display: none
+
+.hide
+  display: none
+
+:host ::ng-deep .spinner circle
+  stroke: #000
+
+
+:host ::ng-deep .spinnerDescription circle
+  stroke: #eee
+
+.spinnerDescriptionWrapper
+  margin: auto 0
+
+.loading
+  position: fixed
+  height: 100%
+  z-index: 100
+  width: 50vw
+  background-color: rgba(255,255,255,0.8)
+  .spinner
+    margin: auto
+    margin-top: calc(50% - 50px)
+
+.detailsComponentWrapper
+  height: 100vh
+  width: 50%
+  z-index: 10
+  background-color: #000
+  overflow-y: auto
+  color: #999
+  .logoBg
+    width: 100%
+    display: flex
+    height: 100%
+    background-image: url("^assets/stark_white.png")
+    background-repeat: no-repeat
+    background-size: 95%
+    background-position: center
+    transform: scaleX(-1)
+  .detailData
+    padding-bottom: 40px
+  h1
+    margin-left: 2.5%
+    padding-top: 20px
+  .detailElement
+    width: 95%
+    padding-left: 2.5%
+    display: inline-flex
+    line-height: 50px
+    &:hover
+      background-color: #999
+      color: #000
+    .detailTitle
+      width: 20%
+      float: left
+    .detailContent
+      width: 78%
+      float: left
+      border-left: 1px solid
+      padding-left: 1%
+      .listItem
+        line-height: 25px
+        border-bottom: 1px dashed
+
+.mat-row.selected
+  background-color: #999
+  p
+    transform: translate(20px)
+    color: #000
+.expansionPanel
+  background-color: transparent
+  width: 98%
+  border-radius: 0 !important
+  .expansionPanelHeader
+    padding: 0
+    padding-right: 15px
+  .expansionPanelTitle
+    padding-left: 2.5%
+    color: #999
+    display: flex
+    flex-grow: unset
+    width: 20%
+    margin: 0
+    line-height: 64px
+  .expansionPanelDescription
+    color: #999
+    line-height: 64px
+    padding-left: 5%
+  .mat-expansion-panel-body
+    background-color: #000
+  .listItem
+    color: #999
+    border-bottom: 1px dotted
+    padding: 10px 0
+    pre
+      white-space: pre-line
+.expansionPanel:hover
+  .expansionPanelHeader
+    background-color: #999
+    .expansionPanelTitle, .expansionPanelDescription
+      color: #000
